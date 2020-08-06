@@ -1,13 +1,13 @@
-import sqlalchemy as sqlalchemy_package
-from sqlalchemy.sql import select
-from sqlalchemy import create_engine, desc, func, case, cast, and_
-from sqlalchemy import Table, MetaData, Column, Integer, Float, String, ForeignKey
-import config_psql as creds
+from sqlalchemy import *
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import *
 import pandas as pd
+
+engine = create_engine('sqlite:///demo.db')
+Base = declarative_base()
 
 # Set up a connection to the postgres server
 DATABASE_URL = f"postgres://{creds.PGUSER}:{creds.PGPASSWORD}@{creds.PGHOST}:5432/{creds.PGDATABASE}"
 engine = sqlalchemy_package.create_engine(DATABASE_URL)
 connection = engine.connect()
-# employees = pd.read_sql('employees', engine)
-# print(employees.head())
