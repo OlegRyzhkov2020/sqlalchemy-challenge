@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 config.py
-example_psql.py
+config_psql.py
 
 # C extensions
 *.so
