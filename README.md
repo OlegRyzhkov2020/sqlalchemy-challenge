@@ -1,4 +1,4 @@
-# Final Project - Oil Market Analysis: Critical Price Factors
+# SQLAlchemy-challenge: Climate Analysis
 
 Data Science and Visualization Boot Camp (Northwestern University)
 
@@ -9,6 +9,6 @@ Data Science and Visualization Boot Camp (Northwestern University)
 ![GitHub watchers](https://img.shields.io/github/watchers/OlegRyzhkov2020/sql-challenge?label=Watch&style=social)
 ![GitHub followers](https://img.shields.io/github/followers/OlegRyzhkov2020?label=Follow&style=social)
 
-## Climate Analysis
+## Exploratory Analysis
 
 ![presentation_slide](images/tobs_analysis.png)
