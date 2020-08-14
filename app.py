@@ -3,8 +3,9 @@
 #######################################################
 
 from datetime import datetime
-from flask import Flask, request, jsonify, render_template
-
+from flask import Flask, jsonify, render_template
+from flask import redirect, request, url_for
+from wtforms import Form, FloatField, validators
 import numpy as np
 import sqlalchemy
 from sqlalchemy import *
@@ -28,6 +29,17 @@ measurement = Base.classes.measurement
 station = Base.classes.station
 
 #######################################################
+# Input Data Class Object
+#######################################################
+class InputForm(Form):
+    Start = FloatField(
+        label='year (YYY)', default=2000,
+        validators=[validators.InputRequired()])
+    End = FloatField(
+        label='year (YYY)', default=2017,
+        validators=[validators.InputRequired()])
+
+#######################################################
 # Flask Setup
 #######################################################
 # Init app
@@ -41,20 +53,13 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     print("Server received request for 'Home' page...")
-    return (
-        f"Available Routes:<br/>"
-        f"/api/v1.0/precipitation<br/>"
-        f"/api/v1.0/stations<br/>"
-        f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/<start>` and `/api/v1.0/<start>/<end>"
-    )
-
+    return render_template("home.html")
 
 # The /about route
 @app.route("/about")
 def about():
     print("Server received request for 'About' page...")
-    return "Welcome to my 'About' page!"
+    return render_template("aboutUs.html")
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
@@ -67,13 +72,13 @@ def precipitation():
         prcp_dict['station'] = measure.station
         prcp_dict[measure.date] = measure.prcp
         prcp_list.append(prcp_dict)
-        # print(measure.id, measure.station, measure.date, measure.prcp, measure.tobs)
     session.close()
 
     return jsonify(prcp_list)
 
-@app.route("/api/v1.0/stations")
+@app.route("/api/v1.0/stations", methods=['POST', 'GET'])
 def stations():
+    print("Server received request for 'Stations' page...")
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
@@ -86,11 +91,15 @@ def stations():
 
     # Convert list of tuples into normal list
     all_names = list(np.ravel(results))
-
-    return jsonify(all_names)
+    return render_template(
+        'stations.html',
+        number = len(all_names),
+        my_list = all_names
+        )
 
 @app.route("/api/v1.0/tobs")
 def tobs():
+    print("Server received request for 'Temperature Observations' page...")
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
@@ -102,7 +111,8 @@ def tobs():
                         filter(extract('year', date_conv) == last_year).\
                         group_by(measurement.station).order_by(desc('total_number')).first()
     act_station = results[0]
-    station_result = f"The most active station in {last_year} is :{results[0]}\n with the number of records = {results[1]}"
+    stat_name = f"The most active station in {last_year} is :{results[0]}"
+    stat_rec = f"The number of records = {results[1]}"
     tobs_results = session.query(date_conv, measurement.tobs.label('temp_observations')).\
                         filter(extract('year', date_conv) == last_year).filter(measurement.station == act_station).\
                         order_by(measurement.tobs.desc()).all()
@@ -111,8 +121,29 @@ def tobs():
     # Convert list of tuples into normal list
     tobs_list = list(np.ravel(tobs_results))
 
-    return jsonify(tobs_list)
+    return render_template(
+        'temperature.html',
+        msg_1 = stat_name,
+        msg_2 = stat_rec,
+        my_list=tobs_results
+        )
+@app.route('/period_output/<name>')
+def period_output(name):
 
+    print(name, type(name))
+
+    return 'welcome %s' % name
+
+@app.route("/api/v1.0/period", methods=['GET','POST'])
+def period():
+    print("Server received request for 'Request for period' page...")
+    form = InputForm(request.form)
+    if request.method == 'POST':
+        start = request.form.Start.data
+        end = request.form.End.data
+        list = [start, end]
+        return redirect(url_for('period_output', name = list))
+    return render_template('period.html')
 
 # Run Server
 if __name__ == "__main__":

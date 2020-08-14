@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>About Flask</title>
+   </head>
+   <body>
+      {% extends "navigate.html" %}
+      {% block content %}
+     <div class="format">
+      <h1>Home Page 1 </h1>
+      <p> Available Data Routes:</p>
+      <li> /api/v1.0/precipitation </li>
+      <li> /api/v1.0/stations </li>
+      <li> /api/v1.0/tobs </li>
+      <li> /api/v1.0/period </li>
+      <img src="{{url_for('static', filename='tobs_analysis.png')}}" width="40%" height="auto" align="middle" padding-left="20%" />
+    </div>
+    {% endblock %}
+   </body>
+</html>

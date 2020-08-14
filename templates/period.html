@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Homework Flask Website</title>
+   </head>
+   <body>
+     {% extends "navigate.html" %}
+     {% block content %}
+      <div class="format">
+        <form action = "http://localhost:5000/api/v1.0/period" method = "POST">
+          <div class="format">
+
+            <p>Create JSON list of min, avg, max temperature for a chosen period<p>
+            <table>
+              {% for field in form %}
+                <tr>
+                <td>{{ field.name }}</td><td>{{ field }}</td>
+                <td>{{ field.label }}</td>
+                </tr>
+              {% endfor %}
+            </table>
+          <div>
+        </form>
+      <div>
+      {% endblock %}
+    </body>
+</html>

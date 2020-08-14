@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Simple Flask Website</title>
+   </head>
+   <body>
+     {% extends "navigate.html" %}
+     {% block content %}
+      <div class="format">
+        <h1>Stations list </h1>
+        <p>Total number of unique stations: {{number}}</p>
+        <p>{{my_list}}</p>
+        </ul>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    {% endblock %}
+  </body>
+  </html>
