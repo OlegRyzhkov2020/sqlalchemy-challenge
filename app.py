@@ -5,7 +5,7 @@
 from datetime import datetime
 from flask import Flask, jsonify, render_template
 from flask import redirect, request, url_for
-from wtforms import Form, FloatField, validators
+from wtforms import Form, DateField, validators
 import numpy as np
 import sqlalchemy
 from sqlalchemy import *
@@ -32,11 +32,11 @@ station = Base.classes.station
 # Input Data Class Object
 #######################################################
 class InputForm(Form):
-    Start = FloatField(
-        label='year (YYY)', default=2000,
+    Start = DateField(label='date (%m/%d/%Y)',
+        format='%m/%d/%Y',
         validators=[validators.InputRequired()])
-    End = FloatField(
-        label='year (YYY)', default=2017,
+    End = DateField(label='date (%m/%d/%Y)',
+        format='%m/%d/%Y',
         validators=[validators.InputRequired()])
 
 #######################################################

@@ -1,4 +1,4 @@
-# SQLAlchemy-challenge: Climate Analysis
+# SQLAlchemy-challenge: Climate Analysis FLASK App
 
 Data Science and Visualization Boot Camp (Northwestern University)
 
@@ -8,6 +8,8 @@ Data Science and Visualization Boot Camp (Northwestern University)
 [![HitCount](http://hits.dwyl.com/OlegRyzhkov2020/oil-project.svg)](http://hits.dwyl.com/OlegRyzhkov2020/sqlalchemy-challenge)
 ![GitHub watchers](https://img.shields.io/github/watchers/OlegRyzhkov2020/sql-challenge?label=Watch&style=social)
 ![GitHub followers](https://img.shields.io/github/followers/OlegRyzhkov2020?label=Follow&style=social)
+
+![presentation_slide](images/stations_page.png)
 
 ## Exploratory Analysis
 
