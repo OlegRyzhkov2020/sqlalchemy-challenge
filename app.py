@@ -63,6 +63,7 @@ def about():
 
 @app.route("/api/v1.0/precipitation")
 def precipitation():
+    print("Server received request for 'Precipitation' page...")
     # Create our session (link) from Python to the DB
     session = Session(engine)
     prcp_list = []
@@ -129,7 +130,7 @@ def tobs():
         )
 @app.route('/period_output/<name>')
 def period_output(name):
-
+    print("Server received request for 'Period Output' page...")
     print(name, type(name))
 
     return 'welcome %s' % name
@@ -138,12 +139,10 @@ def period_output(name):
 def period():
     print("Server received request for 'Request for period' page...")
     form = InputForm(request.form)
-    if request.method == 'POST':
-        start = request.form.Start.data
-        end = request.form.End.data
-        list = [start, end]
+    if request.method == 'POST' and form.validate():
+        list = form.Start.data, form.End.data
         return redirect(url_for('period_output', name = list))
-    return render_template('period.html')
+    return render_template('period.html', form = form)
 
 # Run Server
 if __name__ == "__main__":
