@@ -137,15 +137,20 @@ def period():
     session = Session(engine)
     if request.method == 'POST' and form.validate():
         date_conv = func.date(measurement.date, type_=Date)
+        total = session.query(func.min(measurement.tobs),
+                            func.max(measurement.tobs), func.avg(measurement.tobs)).\
+                            filter((date_conv >= form.Start.data) & (date_conv <= form.End.data)).\
+                            first()
         results = session.query(measurement.station, func.min(measurement.tobs),
                             func.max(measurement.tobs), func.avg(measurement.tobs)).\
                             filter((date_conv >= form.Start.data) & (date_conv <= form.End.data)).\
                             group_by(measurement.station).all()
+        print('Total:', total)
         session.close()
     else:
         results = []
-
-    return render_template('period.html', form = form, results= results)
+        total = []
+    return render_template('period.html', form = form, results= results, total = total)
 
 # Run Server
 if __name__ == "__main__":

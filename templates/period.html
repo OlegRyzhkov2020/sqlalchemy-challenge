@@ -32,14 +32,20 @@
             <th>Max temp</th>
             <th>Avg temp</th>
           </tr>
+          </tr>
             {% for result in results %}
             <tr>
               <td>{{result[0]}}</td>
               <td>{{result[1]}}</td>
               <td>{{result[2]}}</td>
               <td>{{'%0.2f' % result[3]}}</td>
-            </tr>
             {% endfor %}
+            </tr>
+            </tr>
+              <th>Total stations:</th>
+              <th>{{total[0]}}</th>
+              <th>{{total[1]}}</th>
+              <th>{{'%0.2f' % total[2]}}</th>
         </table>
         {% endif %}
         </p>

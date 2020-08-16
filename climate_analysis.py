@@ -9,6 +9,7 @@ rcParams['figure.figsize'] = 12,6
 import numpy as np
 import pandas as pd
 import datetime as dt
+from datetime import datetime, timedelta
 pd.set_option('display.max_colwidth', 40)
 pd.options.display.float_format = '{:,.2f}'.format
 
@@ -33,14 +34,15 @@ station = Base.classes.station
 session = Session(engine)
 for measure in session.query(measurement).limit(10):
     print(measure.id, measure.station, measure.date, measure.prcp, measure.tobs)
+
 # Earliest Date
 date_conv = func.date(measurement.date, type_=Date)
 early_date = session.query(date_conv).order_by(date_conv).first()
-print(early_date)
+# print(early_date)
 
 # Year Ago Date
 year_ago = dt.date(2016,8,23)
-print(year_ago)
+# print(year_ago)
 
 # Design a query to retrieve the last 12 months of precipitation data and plot the results
 stmt = session.query(func.date(measurement.date).label('date'), measurement.prcp.label('precipitation')).\
@@ -53,7 +55,7 @@ print(prcp_data.head(10))
 prcp_data.set_index('date').plot()
 plt.title("Precipitation Analysis over last 12 moths", size=14)
 plt.ylabel('Inches')
-plt.savefig('images/prcp_analysis.png')
+# plt.savefig('images/prcp_analysis.png')
 # Use Pandas to calcualte the summary statistics for the precipitation data
 print(prcp_data.describe())
 
@@ -92,4 +94,4 @@ plt.title(f"Distribution of Temperature Observations (tobs) for station {tobs_st
 plt.ylabel('Frequency')
 plt.xlabel('Temperature')
 plt.show(sns)
-plt.savefig('images/tobs_analysis.png')
+# plt.savefig('images/tobs_analysis.png')
