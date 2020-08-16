@@ -23,6 +23,26 @@
             <p><input type = "submit" value = "submit" /></p>
           <div>
         </form>
+        <p>
+        {% if results|length > 0 %}
+        <table>
+          <tr>
+            <th>Station name</th>
+            <th>Min temp</th>
+            <th>Max temp</th>
+            <th>Avg temp</th>
+          </tr>
+            {% for result in results %}
+            <tr>
+              <td>{{result[0]}}</td>
+              <td>{{result[1]}}</td>
+              <td>{{result[2]}}</td>
+              <td>{{'%0.2f' % result[3]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        </p>
       <div>
       {% endblock %}
     </body>

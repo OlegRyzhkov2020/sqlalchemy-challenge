@@ -32,11 +32,11 @@ station = Base.classes.station
 # Input Data Class Object
 #######################################################
 class InputForm(Form):
-    Start = DateField(label='date (%m/%d/%Y)',
-        format='%m/%d/%Y',
+    Start = DateField(label='date (MM/DD/YY)',
+        format='%m/%d/%Y', default= datetime(2006, 1, 1),
         validators=[validators.InputRequired()])
-    End = DateField(label='date (%m/%d/%Y)',
-        format='%m/%d/%Y',
+    End = DateField(label='date (MM/DD/YY)',
+        format='%m/%d/%Y', default= datetime(2016, 8, 23),
         validators=[validators.InputRequired()])
 
 #######################################################
@@ -116,7 +116,7 @@ def tobs():
     stat_rec = f"The number of records = {results[1]}"
     tobs_results = session.query(date_conv, measurement.tobs.label('temp_observations')).\
                         filter(extract('year', date_conv) == last_year).filter(measurement.station == act_station).\
-                        order_by(measurement.tobs.desc()).all()
+                        order_by(measurement.tobs.desc()).limit(20).all()
     session.close()
 
     # Convert list of tuples into normal list
@@ -128,21 +128,24 @@ def tobs():
         msg_2 = stat_rec,
         my_list=tobs_results
         )
-@app.route('/period_output/<name>')
-def period_output(name):
-    print("Server received request for 'Period Output' page...")
-    print(name, type(name))
-
-    return 'welcome %s' % name
 
 @app.route("/api/v1.0/period", methods=['GET','POST'])
 def period():
     print("Server received request for 'Request for period' page...")
     form = InputForm(request.form)
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
     if request.method == 'POST' and form.validate():
-        list = form.Start.data, form.End.data
-        return redirect(url_for('period_output', name = list))
-    return render_template('period.html', form = form)
+        date_conv = func.date(measurement.date, type_=Date)
+        results = session.query(measurement.station, func.min(measurement.tobs),
+                            func.max(measurement.tobs), func.avg(measurement.tobs)).\
+                            filter((date_conv >= form.Start.data) & (date_conv <= form.End.data)).\
+                            group_by(measurement.station).all()
+        session.close()
+    else:
+        results = []
+
+    return render_template('period.html', form = form, results= results)
 
 # Run Server
 if __name__ == "__main__":

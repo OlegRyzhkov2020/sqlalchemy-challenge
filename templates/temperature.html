@@ -11,11 +11,16 @@
       <h1>Temperature Data </h1>
       <p>{{msg_1}}</p>
       <p>{{msg_2}}</p>
-      <p>Loop through the data list (Date, Temperature observations):</p>
       <ul>
-        {% for n in my_list %}
-        <li>{{n[0]}} {{n[1]}}</li>
-        {% endfor %}
+        <table>
+          <tr>
+            <th>Date</th><th>Temperature observations</th>
+          <tr>
+            {% for n in my_list %}
+            <td>{{n[0]}}<td><td>{{n[1]}}<td>
+            <tr>
+            {% endfor %}
+        <table>
       </ul>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
