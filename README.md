@@ -13,6 +13,8 @@ Data Science and Visualization Boot Camp (Northwestern University)
 
 ## Exploratory Analysis
 
+![presentation_slide](images/box_plot.png)
+
 ![presentation_slide](images/prcp_analysis.png)
 
 ![presentation_slide](images/tobs_analysis.png)
